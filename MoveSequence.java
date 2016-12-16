@@ -11,5 +11,9 @@ class MoveSequence {
 	    mSeq[i] = m.get(i);
 	     
     }
+
+    public Move get (int idx) { return this.mSeq[idx];}
+    public int size() { return this.mSeq.length; }
+
     
 }

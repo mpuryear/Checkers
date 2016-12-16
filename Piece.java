@@ -29,8 +29,10 @@ class Piece {
     public boolean isRed() { return color.equals("RED"); }
     public boolean isBlack() { return color.equals("BLACK"); }
     public boolean isEmpty() { return type.equals("EMPTY"); }
+    public boolean isKing() { return type.equals("KING"); }
     public String getPiece() { return type; }
 
-    public String getColor() { return this.color;} 
+    public String getColor() { return this.color;}
+    public String getColorType() { return new String(color + "_" + type); }
    
 }

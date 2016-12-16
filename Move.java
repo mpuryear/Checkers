@@ -1,7 +1,11 @@
-class Move {
-    int direction; // 1 is up 0 is down?
+/* File: Move.java
+   Author: Mathew Puryear & Dulce Palacios
+   Assignment: Final Project CS 360
+   Description: This class is responsible for holding the attributes of a move.
+*/
 
-    int fromR, fromC, toR, toC; // fromRow fromColumn, toRow, toCol
+class Move {
+    int fromR, fromC, toR, toC;
 
     public Move(int fromR, int fromC, int toR, int toC) {
 		this.fromR = fromR;

@@ -1,3 +1,10 @@
+/* File: MoveSequence.java
+   Author: Mathew Puryear & Dulce Palacios
+   Assignment: Final Project CS 360
+   Description: This class is responsible for storing an array of valid moves
+                that a piece can make on the board.
+*/
+
 import java.util.*;
 
 class MoveSequence {

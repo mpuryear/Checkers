@@ -1,3 +1,10 @@
+/* File: Game.java
+   Author: Mathew Puryear & Dulce Palacios
+   Assignment: Final Project CS 360
+   Description: This class is responsible for managing the rules
+   				of the game and the rest of the classes.
+*/
+
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,14 +36,17 @@ class Game extends JPanel implements ActionListener, MouseListener {
 		buttonPanel = new JPanel();
 
 		message = new JLabel("HELLO", JLabel.CENTER);
+		message.setFont(new Font("TimesRoman", Font.BOLD, 20));
+		message.setForeground(Color.white);
+
 
 		Button b = new Button("NEW GAME");
 		b.setVisible(true);
-		b.setBackground(Color.black);
+		// b.setBackground(Color.white);
 		b.addActionListener(this);
 		buttonPanel.add(b);
 		buttonPanel.add(message);
-		buttonPanel.setBackground(Color.white);
+		buttonPanel.setBackground(new Color(66, 29, 15));
 
 		gamePanel = new JPanel();
 		gamePanel.setBackground(Color.red);
@@ -47,10 +57,8 @@ class Game extends JPanel implements ActionListener, MouseListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(new Dimension(HEIGHT_WIDTH, HEIGHT_WIDTH + 65));
 		frame.setVisible(true);
+		frame.setResizable(false);
 
-		System.out.println("BUTTON PANEL HEIGHt:  " + buttonPanel.getPreferredSize().height );
-
-		System.out.println("Frame HEIGHt:  " + frame.getPreferredSize().height );
 		frame.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		frame.getContentPane().add(gamePanel, BorderLayout.CENTER);
 		frame.add(this);
@@ -80,7 +88,6 @@ class Game extends JPanel implements ActionListener, MouseListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		// super.paintComponent(g);
-		System.out.println("DKFHSFJKHDSF");
 		g.setColor(Color.black);
       	g.drawRect(0,0, frame.getContentPane().getSize().width-1, frame.getContentPane().getSize().height-1);
       	g.drawRect(1,1, frame.getSize().width-3, frame.getSize().height-3);
@@ -91,7 +98,7 @@ class Game extends JPanel implements ActionListener, MouseListener {
             	if ( row % 2 == col % 2 )
                 	g.setColor(Color.lightGray);
              	else
-                	g.setColor(Color.gray);
+                	g.setColor(Color.darkGray);
              	g.fillRect(2 + col*80, 2 + row*80, 80, 80);
 
 	             // Piece piece = board.getPiece(row, col);
@@ -149,9 +156,7 @@ class Game extends JPanel implements ActionListener, MouseListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e ) {
-		System.out.println("action prr");
 		startGame();
-
 	}
 
 	@Override
@@ -162,7 +167,7 @@ class Game extends JPanel implements ActionListener, MouseListener {
 		else {
 			int col = (e.getX() - 2) / 80;
 			int row = (e.getY() - 2) / 80;
-					System.out.println(row + ", " + col);
+			System.out.println(row + ", " + col);
 			if(col >= 0 && col < Board.NUM_ROW_COL 
 				&& row >= 0 && row < Board.NUM_ROW_COL) {
 				clickSquare(row,col);
@@ -176,6 +181,7 @@ class Game extends JPanel implements ActionListener, MouseListener {
  	public void mouseExited(MouseEvent evt) { }
 
  	public void clickSquare(int row, int col) {
+ 		/* */
  		for (int i =0; i < mSeq.size(); i++) {
  			if (mSeq.get(i).fromR == row && mSeq.get(i).fromC == col) {
  				selectedR = row;

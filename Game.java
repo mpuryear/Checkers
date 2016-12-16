@@ -4,7 +4,6 @@
    Description: This class is responsible for managing the rules
    				of the game and the rest of the classes.
 */
-
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -19,7 +18,7 @@ class Game extends JPanel implements ActionListener, MouseListener {
 	private JPanel buttonPanel, gamePanel;
 	private Board board;
 	private Boolean gameOver;
-	private Player currentPlayer;
+	private Player currentPlayer, redPlayer, blackPlayer;
 	private int selectedR, selectedC;
 	private MoveSequence mSeq;
 	private JLabel message;
@@ -39,10 +38,8 @@ class Game extends JPanel implements ActionListener, MouseListener {
 		message.setFont(new Font("TimesRoman", Font.BOLD, 20));
 		message.setForeground(Color.white);
 
-
 		Button b = new Button("NEW GAME");
 		b.setVisible(true);
-		// b.setBackground(Color.white);
 		b.addActionListener(this);
 		buttonPanel.add(b);
 		buttonPanel.add(message);
@@ -70,16 +67,39 @@ class Game extends JPanel implements ActionListener, MouseListener {
 	public void startGame() {
 		if (gameOver == false) {
 			message.setText(""); // POP UP 
-			int result = JOptionPane.showConfirmDialog(null, "Restart?", "Warning", JOptionPane.YES_NO_OPTION);
+			int result = JOptionPane.showConfirmDialog(null, "Restart?", "Game Over", JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.NO_OPTION)
 				return;
 		}
 		board.setup();
-		currentPlayer = new Player("RED");
+
+		if (JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(null, "Should the red player be AI?", 
+			"Prompt", JOptionPane.YES_NO_OPTION)) {
+			redPlayer = new Player("RED");
+			redPlayer.setAI(false);
+		} else {
+			redPlayer = new SimpleAI("RED");
+			redPlayer.setAI(true);
+		}
+
+		if (JOptionPane.NO_OPTION == JOptionPane.showConfirmDialog(null, "Should the black player be AI?", 
+			"Prompt", JOptionPane.YES_NO_OPTION)) {
+			blackPlayer = new Player("BLACK");
+			blackPlayer.setAI(false);
+		} else {
+			blackPlayer = new SimpleAI("BLACK");
+			blackPlayer.setAI(true);
+		}
+
+		currentPlayer = redPlayer;
 		mSeq = board.getValidMoves(currentPlayer);
 		selectedR = -1;
 		message.setText("RED: Make your move.");
 		gameOver = false;
+
+		if (currentPlayer instanceof SimpleAI) {
+			SimpleAITurn();
+		}
 
 		repaint();
 		return;
@@ -161,7 +181,6 @@ class Game extends JPanel implements ActionListener, MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
 		if(gameOver)
 			message.setText("Game Over.");
 		else {
@@ -181,7 +200,6 @@ class Game extends JPanel implements ActionListener, MouseListener {
  	public void mouseExited(MouseEvent evt) { }
 
  	public void clickSquare(int row, int col) {
- 		/* */
  		for (int i =0; i < mSeq.size(); i++) {
  			if (mSeq.get(i).fromR == row && mSeq.get(i).fromC == col) {
  				selectedR = row;
@@ -220,13 +238,17 @@ class Game extends JPanel implements ActionListener, MouseListener {
  					message.setText("Black must jump");
  				selectedR = m.toR;
  				selectedC = m.toC;
+
+ 				if (currentPlayer instanceof SimpleAI) {
+ 					SimpleAITurn();
+ 				}
  				repaint();
  				return;
  			}
  		}
 
  		if(currentPlayer.isRed()) {
- 			currentPlayer = new Player("BLACK");
+ 			currentPlayer = blackPlayer;
  			mSeq = board.getValidMoves(currentPlayer);
  			if(mSeq == null)
  				gameOver("RED WINS");
@@ -236,7 +258,7 @@ class Game extends JPanel implements ActionListener, MouseListener {
  				message.setText("Black, make a move.");
  		}
  		else {
- 			currentPlayer = new Player("RED");
+ 			currentPlayer = redPlayer;
  			mSeq = board.getValidMoves(currentPlayer);
  			if(mSeq == null)
  				gameOver("BLACK WINS");
@@ -246,16 +268,24 @@ class Game extends JPanel implements ActionListener, MouseListener {
  				message.setText("Red, make a move");
 
  		}
-
  		selectedR = -1;
+ 		if (currentPlayer instanceof SimpleAI) {
+ 			SimpleAITurn();
+ 		}
  		repaint();
-
  	}
+
+ 	public void SimpleAITurn() {
+ 		Move ai_move = ((SimpleAI) currentPlayer).getNextMove(mSeq);
+ 		mousePressed(new MouseEvent(this, 0, 0, 0, (ai_move.fromC * 80) + 2, (ai_move.fromR * 80) + 2, 1, false));
+ 		mousePressed(new MouseEvent(this, 0, 0, 0, (ai_move.toC * 80) + 2, (ai_move.toR * 80) + 2, 1, false));
+ 	}
+
 
  	public void gameOver(String s) {
  		message.setText(s);
  		gameOver = true;
- 		int result = JOptionPane.showConfirmDialog(null, "New Game?", "Warning", JOptionPane.YES_NO_OPTION);
+ 		int result = JOptionPane.showConfirmDialog(null, "New Game?", "Game Over", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.NO_OPTION)
 			System.exit(0);
 		startGame();

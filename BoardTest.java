@@ -24,7 +24,6 @@ class BoardTest extends Board{
 	Board b = new Board();
 	Piece[][] pieces = b.getBoard();
 
-
 	// Test all Setup()
 	for(int r = 0; r < Board.NUM_ROW_COL; r++){
 	    for(int c = 0; c < Board.NUM_ROW_COL; c++) {
@@ -44,16 +43,12 @@ class BoardTest extends Board{
 	    }
 	}
 
-
-	
+	// Get a random piece and apply it to the board and check its new position
 	for(int i = 0; i < TEST_NUMBER; i++) {
 	    int r = rand.nextInt(Board.NUM_ROW_COL);
 	    int c = rand.nextInt(Board.NUM_ROW_COL);
 	    t &= test(b.getPiece(r,c) == pieces[r][c], count++, "Piece(r,c): " + r + "," + c);
 	}
-
-
-
 	
 	for(int i = 0; i < TEST_NUMBER; i++) {
 	    int r = rand.nextInt(Board.NUM_ROW_COL);
@@ -69,8 +64,6 @@ class BoardTest extends Board{
 			  count++, "SetBlack r,c: " + r + "," + c);
 	    }
 	}
-	
-
 
 	// Test get validMoves.
 	// Have only 1 piece on the board.

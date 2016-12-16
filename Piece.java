@@ -30,5 +30,7 @@ class Piece {
     public boolean isBlack() { return color.equals("BLACK"); }
     public boolean isEmpty() { return type.equals("EMPTY"); }
     public String getPiece() { return type; }
+
+    public String getColor() { return this.color;} 
    
 }

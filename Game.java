@@ -186,7 +186,6 @@ class Game extends JPanel implements ActionListener, MouseListener {
 		else {
 			int col = (e.getX() - 2) / 80;
 			int row = (e.getY() - 2) / 80;
-			System.out.println(row + ", " + col);
 			if(col >= 0 && col < Board.NUM_ROW_COL 
 				&& row >= 0 && row < Board.NUM_ROW_COL) {
 				clickSquare(row,col);

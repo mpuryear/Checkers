@@ -3,7 +3,6 @@
    Assignment: Final Project CS 360
    Description: Simple AI.
 */
-   
 
 import java.util.Random;
 
